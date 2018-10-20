@@ -95,6 +95,72 @@
 		C\==B,
 		\+member(C,Visited),
 		travel(C,B,[C|Visited],Route).
+		
+%Genealogy
+		
+	% Knowledge Base
+	male(adam).
+	male(bob).
+	male(benson).
+	male(brett).
+	male(charles).
+	male(chris).
+	male(clay).
+	female(ava).
+	female(barbara).
+	female(betty).
+	female(colette).
+	female(carrie).
+	parent(adam,bob).
+	parent(adam,barbara).
+	parent(adam,benson).
+	parent(ava,bob).
+	parent(ava,barbara).
+	parent(bob,clay).
+	parent(barbara,colette).
+	
+	mother(X,Y):-
+		female(X),
+		parent(X,Y).
+	
+	father(X,Y):-
+		male(X),
+		parent(X,Y).
+		
+	child(X,Y):-
+		parent(Y,X).
+		
+	sibling(X,Y):-
+		setof((X,Y),  P^(parent(P,X),parent(P,Y),X\=Y),S),
+		member((X,Y), S),
+		\+ (Y@<X, member((Y,X), S)).
+	
+	grandparent(X,Y):-
+		parent(Z,Y),
+		parent(X,Z).
+	
+	grandmother(X,Y):-
+		female(X),
+		grandparent(X,Y).
+		
+	grandfather(X,Y):-
+		male(X),
+		grandparent(X,Y).
+		
+	grandchild(X,Y):-
+		grandparent(Y,X).
+	
+	grandson(X,Y):-
+		male(X),
+		grandchild(X,Y).
+		
+	granddaughter(X,Y):-
+		female(X),
+		grandchild(X,Y).
+		
+	
+	
+
 	
 	
 
